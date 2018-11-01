@@ -1,0 +1,31 @@
+{
+  "name": "create-yo",
+  "version": "0.0.0",
+  "description": "Use Yeoman generators via \"npm init\"",
+  "main": "src/create-yo.js",
+  "bin": {
+    "create-yo": "src/create-yo.js"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [],
+  "author": "Christopher Hiller <boneskull@boneskull.com> (https://boneskull.com/)",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "libnpx": "^10.2.0",
+    "log-symbols": "^2.2.0",
+    "which": "^1.3.1"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0",
+    "rewiremock": "^3.11.0",
+    "sinon": "^7.1.1",
+    "unexpected": "^10.39.1",
+    "unexpected-sinon": "^10.10.1"
+  }
+}
