@@ -9,7 +9,15 @@ const which = require('which');
 
 const PREFIX = 'generator-';
 
-function create(
+/**
+ * Invokes `npx` with `--package generator-generatorName yo -- generatorName`
+ *
+ * @public
+ * @param {string[]} [argv] - Args to use, or copy of `process.argv` by default
+ * @param {string} [npmPath] - Absolute path to `npm-cli.js`
+ * @returns {Promise<void>} When finished
+ */
+async function create(
   argv = process.argv.slice(),
   npmPath = which.sync('npm')
 ) {
@@ -22,11 +30,15 @@ function create(
   }
 
   let generator = argv.pop();
+
   let generatorPackage = generator.startsWith(PREFIX)
     ? generator
     : `${PREFIX}${generator}`;
   let generatorName = generatorPackage.slice(PREFIX.length);
-  npx(
+
+  // handle subgenerators
+  generatorPackage = generatorPackage.split(':').shift();
+  return npx(
     npx.parseArgs(
       argv.concat('--package', generatorPackage, 'yo', '--', generatorName),
       npmPath
@@ -34,14 +46,16 @@ function create(
   );
 }
 
-if (require.main === module) {
-  try {
-    create();
-    console.error(`${symbols.success} create-yo done`);
-  } catch (err) {
-    console.error(`${symbols.error} create-yo errored:\n\n${err}`);
-    process.exit(1);
+(async function() {
+  if (require.main === module) {
+    try {
+      await create();
+      console.error(`${symbols.success} create-yo done`);
+    } catch (err) {
+      console.error(`${symbols.error} create-yo errored:\n\n${err}`);
+      process.exit(1);
+    }
   }
-}
+})();
 
 exports.create = create;
