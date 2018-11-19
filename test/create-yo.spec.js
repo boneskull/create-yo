@@ -7,13 +7,13 @@ describe('create-yo', function() {
   let sandbox;
 
   describe('failures', function() {
-    let spy;
+    let libnpx;
     let create;
 
     beforeEach(function() {
       sandbox = sinon.createSandbox();
-      spy = sandbox.spy();
-      spy.parseArgs = parseArgs;
+      libnpx = sandbox.spy();
+      libnpx.parseArgs = parseArgs;
       rewiremock.enable();
       create = rewiremock.proxy('..', r => ({
         which: r
@@ -21,7 +21,7 @@ describe('create-yo', function() {
             sync: sandbox.stub().returns('/path/to/npm')
           })
           .directChildOnly(),
-        libnpx: r.by(() => spy)
+        libnpx: r.by(() => libnpx)
       })).create;
     });
 
@@ -43,9 +43,13 @@ describe('create-yo', function() {
     });
 
     describe('when no path to npm found', function() {
+      beforeEach(function() {
+        sandbox.stub(console, 'error');
+      });
+
       it('should use `which` to find one', function() {
         create(['/path/to/node', '/path/to/create-yo', 'some-generator'], '');
-        expect(spy, 'to have a call satisfying', {
+        expect(libnpx, 'to have a call satisfying', {
           args: [
             {
               package: ['generator-some-generator@latest'],

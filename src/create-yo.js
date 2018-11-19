@@ -1,3 +1,5 @@
+'use strict';
+
 const npx = require('libnpx');
 const symbols = require('log-symbols');
 const chalk = require('chalk');
@@ -47,7 +49,7 @@ if (require.main === module) {
     create();
     console.error(`${symbols.success} create-yo done`);
   } catch (err) {
-    console.error(`${symbols.error} ${err}`);
+    console.error(`${symbols.error} create-yo errored`, err);
     process.exit(1);
   }
 }
