@@ -36,5 +36,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/boneskull/create-yo.git"
-  }
+  },
+  "files": [
+    "src/create-yo.js"
+  ]
 }

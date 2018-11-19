@@ -1,8 +1,11 @@
+'use strict';
+
 const expect = require('unexpected').clone();
 expect.use(require('unexpected-sinon'));
 const sinon = require('sinon');
 const rewiremock = require('rewiremock/node');
 const {parseArgs} = require('libnpx');
+
 describe('create-yo', function() {
   let sandbox;
 
@@ -48,7 +51,7 @@ describe('create-yo', function() {
       });
 
       it('should use `which` to find one', function() {
-        create(['/path/to/node', '/path/to/create-yo', 'some-generator'], '');
+        create(['/path/to/node', '/path/to/create-yo', 'some-generator']);
         expect(libnpx, 'to have a call satisfying', {
           args: [
             {

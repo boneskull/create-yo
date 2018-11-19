@@ -11,25 +11,13 @@ const PREFIX = 'generator-';
 
 function create(
   argv = process.argv.slice(),
-  npmPath = process.env.npm_execpath
+  npmPath = which.sync('npm')
 ) {
   if (argv.length < 3) {
     throw new Error(
       `specify a generator to run via ${chalk.bold(
         'npm init yo <generator>'
       )}. See list: http://yeoman.io/generators/`
-    );
-  }
-
-  if (!npmPath) {
-    console.error(
-      `${symbols.warning} create-yo should be run via ${chalk.bold(
-        'npm init yo <generator>'
-      )}`
-    );
-    npmPath = which.sync('npm');
-    console.error(
-      `${symbols.warning} using npm executable found at ${npmPath}`
     );
   }
 
@@ -51,7 +39,7 @@ if (require.main === module) {
     create();
     console.error(`${symbols.success} create-yo done`);
   } catch (err) {
-    console.error(`${symbols.error} create-yo errored`, err);
+    console.error(`${symbols.error} create-yo errored:\n\n${err}`);
     process.exit(1);
   }
 }
