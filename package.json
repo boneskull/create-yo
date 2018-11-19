@@ -1,13 +1,15 @@
 {
   "name": "create-yo",
-  "version": "0.0.0",
+  "version": "0.0.0-development",
   "description": "Use Yeoman generators via \"npm init\"",
   "main": "src/create-yo.js",
   "bin": {
     "create-yo": "src/create-yo.js"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "semantic-release": "semantic-release",
+    "travis-deploy-once": "travis-deploy-once"
   },
   "keywords": [],
   "author": "Christopher Hiller <boneskull@boneskull.com> (https://boneskull.com/)",
@@ -27,6 +29,12 @@
     "rewiremock": "^3.11.0",
     "sinon": "^7.1.1",
     "unexpected": "^10.39.1",
-    "unexpected-sinon": "^10.10.1"
+    "unexpected-sinon": "^10.10.1",
+    "semantic-release": "^15.12.0",
+    "travis-deploy-once": "^5.0.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/boneskull/create-yo.git"
   }
 }
