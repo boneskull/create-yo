@@ -5,7 +5,6 @@ expect.use(require('unexpected-sinon'));
 const sinon = require('sinon');
 const rewiremock = require('rewiremock/node');
 const {parseArgs} = require('libnpx');
-const {exec} = require('child_process');
 
 describe('create-yo', function() {
   let sandbox;
