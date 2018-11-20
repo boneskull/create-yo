@@ -50,7 +50,7 @@ async function create(
   if (require.main === module) {
     try {
       await create();
-      console.error(`${symbols.success} create-yo done`);
+      console.error(`${symbols.success} create-yo ok!`);
     } catch (err) {
       console.error(`${symbols.error} create-yo errored:\n\n${err}`);
       process.exit(1);
