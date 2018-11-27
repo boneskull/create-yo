@@ -1,10 +1,16 @@
 'use strict';
 
+const path = require('path');
 const expect = require('unexpected').clone();
 expect.use(require('unexpected-sinon'));
 const sinon = require('sinon');
 const rewiremock = require('rewiremock/node');
-const {parseArgs} = require('libnpx');
+const globalDirs = require('global-dirs');
+const importFrom = require('import-from');
+const {parseArgs} = importFrom(
+  path.join(globalDirs.npm.packages, 'npm'),
+  'libnpx'
+);
 
 describe('create-yo', function() {
   let sandbox;
@@ -19,12 +25,13 @@ describe('create-yo', function() {
       libnpx.parseArgs = parseArgs;
       rewiremock.enable();
       create = rewiremock.proxy('..', r => ({
-        which: r
-          .with({
-            sync: sandbox.stub().returns('/path/to/npm')
-          })
-          .directChildOnly(),
-        libnpx: r.by(() => libnpx)
+        'global-dirs': r.by(() => ({
+          npm: {
+            packages: '/path/to/global/packages',
+            binaries: '/path/to/global/binaries'
+          }
+        })),
+        'import-from': r.by(() => () => libnpx)
       })).create;
     });
 
@@ -48,14 +55,14 @@ describe('create-yo', function() {
         sandbox.stub(console, 'error');
       });
 
-      it('should use `which` to find one', async function() {
+      it('should use global one', async function() {
         await create(['/path/to/node', '/path/to/create-yo', 'some-generator']);
         expect(libnpx, 'to have a call satisfying', {
           args: [
             {
               package: ['generator-some-generator@latest'],
               cmdOpts: ['--', 'some-generator'],
-              npm: '/path/to/npm'
+              npm: '/path/to/global/binaries/npm'
             }
           ]
         });
@@ -74,7 +81,7 @@ describe('create-yo', function() {
             {
               package: ['generator-some-generator@latest'],
               cmdOpts: ['--', 'some-generator:subgenerator'],
-              npm: '/path/to/npm'
+              npm: '/path/to/global/binaries/npm'
             }
           ]
         });
