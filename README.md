@@ -34,7 +34,11 @@ See [a list of generators here](http://yeoman.io/generators/).
 
 This package does little other than monkey with arguments and invoke `npx` programmatically.
 
+## Contribution
 
+Please use [Angular Commit Message Conventions](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines).  Messages are checked using [commitlint](https://npm.im/commitlint).
+
+PRO TIP: After staging your changes with `git add`, use `npm run commit` for a fancy interactive prompt.
 
 ## Maintainers
 
