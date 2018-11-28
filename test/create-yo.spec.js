@@ -60,8 +60,9 @@ describe('create-yo', function() {
         expect(libnpx, 'to have a call satisfying', {
           args: [
             {
-              package: ['generator-some-generator@latest'],
-              cmdOpts: ['--', 'some-generator'],
+              package: ['yo@latest', 'generator-some-generator@latest'],
+              command: 'yo',
+              cmdOpts: ['some-generator'],
               npm: '/path/to/global/binaries/npm'
             }
           ]
@@ -79,8 +80,9 @@ describe('create-yo', function() {
         expect(libnpx, 'to have a call satisfying', {
           args: [
             {
-              package: ['generator-some-generator@latest'],
-              cmdOpts: ['--', 'some-generator:subgenerator'],
+              package: ['yo@latest', 'generator-some-generator@latest'],
+              command: 'yo',
+              cmdOpts: ['some-generator:subgenerator'],
               npm: '/path/to/global/binaries/npm'
             }
           ]

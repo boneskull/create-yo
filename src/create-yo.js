@@ -12,7 +12,7 @@ const bold = require('ansi-bold');
 const PREFIX = 'generator-';
 
 /**
- * Invokes `npx` with `--package generator-generatorName yo -- generatorName`
+ * Invokes `npx` with `--package yo --package generator-generatorName -- yo generatorName`
  *
  * @public
  * @param {string[]} [argv] - Args to use, or copy of `process.argv` by default
@@ -42,7 +42,15 @@ async function create(
   generatorPackage = generatorPackage.split(':').shift();
   return npx(
     npx.parseArgs(
-      argv.concat('--package', generatorPackage, 'yo', '--', generatorName),
+      argv.concat(
+        '--package',
+        'yo',
+        '--package',
+        generatorPackage,
+        '--',
+        'yo',
+        generatorName
+      ),
       npmPath
     )
   );
