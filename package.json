@@ -11,7 +11,18 @@
     "semantic-release": "semantic-release",
     "travis-deploy-once": "travis-deploy-once"
   },
-  "keywords": [],
+  "keywords": [
+    "yo",
+    "yeoman",
+    "npm",
+    "init",
+    "create",
+    "scaffolding",
+    "generator",
+    "scaffold",
+    "initialize",
+    "npx"
+  ],
   "author": "Christopher Hiller <boneskull@boneskull.com> (https://boneskull.com/)",
   "license": "Apache-2.0",
   "dependencies": {
