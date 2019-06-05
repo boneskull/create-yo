@@ -1,22 +1,16 @@
+root: true
 extends:
   - semistandard
   - plugin:prettier/recommended
-  - prettier/standard
-parserOptions:
-  sourceType: script
-  ecmaVersion: 2017
 rules:
-  prettier/prettier:
-    - error
-    - singleQuote: true
-      bracketSpacing: false
   strict:
     - error
     - safe
-plugins:
-  - prettier
+  standard/computed-property-even-spacing: false
+parserOptions:
+  sourceType: script
 overrides:
   - files:
-      - test/**/*.js
+      - test/**/*.spec.js
     env:
       mocha: true

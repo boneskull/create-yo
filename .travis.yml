@@ -2,14 +2,9 @@ language: node_js
 notifications:
   email: false
 node_js:
-  - '11'
+  - '12'
   - '10'
   - '8'
-after_success:
-  - npm run travis-deploy-once "npm run semantic-release"
-branches:
-  except:
-    - /^v\d+\.\d+\.\d+$/
 before_install: |
   [[ ! -x ~/npm/node_modules/.bin/npm ]] && {
     # caching feature creates `~/npm` for us
@@ -24,3 +19,15 @@ cache:
   directories:
     - ~/.npm # cache npm's cache
     - ~/npm # cache latest npm
+jobs:
+  include:
+    # Define the release stage that runs semantic-release
+    - stage: release
+      node_js: lts/*
+      # Advanced: optionally overwrite your default `script` step to skip the tests
+      script: skip
+      deploy:
+        provider: script
+        skip_cleanup: true
+        script:
+          - npx semantic-release
