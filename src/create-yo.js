@@ -2,15 +2,17 @@
 
 'use strict';
 
-const npx = require('libnpx');
+const path = require('path');
+const globalDirs = require('global-dirs');
+const importFrom = require('import-from');
+const npx = importFrom(path.join(globalDirs.npm.packages, 'npm'), 'libnpx');
 const symbols = require('log-symbols');
-const chalk = require('chalk');
-const which = require('which');
+const bold = require('ansi-bold');
 
 const PREFIX = 'generator-';
 
 /**
- * Invokes `npx` with `--package generator-generatorName yo -- generatorName`
+ * Invokes `npx` with `--package yo --package generator-generatorName -- yo generatorName`
  *
  * @public
  * @param {string[]} [argv] - Args to use, or copy of `process.argv` by default
@@ -19,11 +21,11 @@ const PREFIX = 'generator-';
  */
 async function create(
   argv = process.argv.slice(),
-  npmPath = which.sync('npm')
+  npmPath = path.join(globalDirs.npm.binaries, 'npm')
 ) {
   if (argv.length < 3) {
     throw new Error(
-      `specify a generator to run via ${chalk.bold(
+      `specify a generator to run via ${bold(
         'npm init yo <generator>'
       )}. See list: http://yeoman.io/generators/`
     );
@@ -40,7 +42,15 @@ async function create(
   generatorPackage = generatorPackage.split(':').shift();
   return npx(
     npx.parseArgs(
-      argv.concat('--package', generatorPackage, 'yo', '--', generatorName),
+      argv.concat(
+        '--package',
+        'yo',
+        '--package',
+        generatorPackage,
+        '--',
+        'yo',
+        generatorName
+      ),
       npmPath
     )
   );

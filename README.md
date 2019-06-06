@@ -13,7 +13,7 @@ As of npm v6.1.0, you can [use a custom package](https://github.com/npm/npm/pull
 
 ## Install
 
-You *could* install this, but you shouldn't have to.  Use `npm` to install globally if you wish.
+You _could_ install this, but you shouldn't have to. Use `npm` to install globally if you wish.
 
 ### Requirements
 
@@ -26,7 +26,7 @@ You *could* install this, but you shouldn't have to.  Use `npm` to install globa
 $ npm init yo <some-generator>
 ```
 
-All Yeoman generator packages start with `generator-`; this prefix is *optional*.  In other words, `npm init yo license` will work just as well as `npm init yo generator-license`.
+All Yeoman generator packages start with `generator-`; this prefix is _optional_. In other words, `npm init yo license` will work just as well as `npm init yo generator-license`.
 
 See [a list of generators here](http://yeoman.io/generators/).
 
@@ -36,7 +36,7 @@ This package does little other than monkey with arguments and invoke `npx` progr
 
 ## Contribution
 
-Please use [Angular Commit Message Conventions](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines).  Messages are checked using [commitlint](https://npm.im/commitlint).
+Please use [Angular Commit Message Conventions](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines). Messages are checked using [commitlint](https://npm.im/commitlint).
 
 PRO TIP: After staging your changes with `git add`, use `npm run commit` for a fancy interactive prompt.
 
@@ -46,4 +46,4 @@ PRO TIP: After staging your changes with `git add`, use `npm run commit` for a f
 
 ## License
 
-Copyright © 2018 Christopher Hiller.  Licensed Apache-2.0
+Copyright © 2019 Christopher Hiller. Licensed Apache-2.0
