@@ -32,17 +32,25 @@ async function create(
   }
 
   let generator = argv.pop();
-
-  let generatorPackage = generator.startsWith(PREFIX)
-    ? generator
-    : `${PREFIX}${generator}`;
-  let generatorName = generatorPackage.slice(PREFIX.length);
+  let generatorPackage;
+  let generatorName;
+  if (generator.startsWith('@')) {
+    // handle scoped packages
+    generatorName = generatorPackage = generator;
+  } else {
+    generatorPackage = generator.startsWith(PREFIX)
+      ? generator
+      : `${PREFIX}${generator}`;
+    generatorName = generatorPackage.slice(PREFIX.length);
+  }
 
   // handle subgenerators
   generatorPackage = generatorPackage.split(':').shift();
+
   return npx(
     npx.parseArgs(
-      argv.concat(
+      [
+        ...argv,
         '--package',
         'yo',
         '--package',
@@ -50,7 +58,7 @@ async function create(
         '--',
         'yo',
         generatorName
-      ),
+      ],
       npmPath
     )
   );

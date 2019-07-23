@@ -23,10 +23,10 @@ You _could_ install this, but you shouldn't have to. Use `npm` to install global
 ## Usage
 
 ```shell
-$ npm init yo <some-generator>
+$ npm init yo <some-generator>[:subgenerator]
 ```
 
-All Yeoman generator packages start with `generator-`; this prefix is _optional_. In other words, `npm init yo license` will work just as well as `npm init yo generator-license`.
+All Yeoman generator packages start with `generator-`; this prefix is _optional_ **unless you are using a scoped package**. In other words, `npm init yo license` will work just as well as `npm init yo generator-license`, but to use generator `@butts/generator-butts`, you must specify the complete package name with `npm init yo @butts/generator-butts`.
 
 See [a list of generators here](http://yeoman.io/generators/).
 

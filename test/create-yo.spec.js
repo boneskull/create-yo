@@ -15,31 +15,29 @@ const {parseArgs} = importFrom(
 describe('create-yo', function() {
   let sandbox;
 
-  describe('failures', function() {
-    let libnpx;
-    let create;
+  let libnpx;
+  let create;
 
-    beforeEach(function() {
-      sandbox = sinon.createSandbox();
-      libnpx = sandbox.spy();
-      libnpx.parseArgs = parseArgs;
-      rewiremock.enable();
-      create = rewiremock.proxy('..', r => ({
-        'global-dirs': r.by(() => ({
-          npm: {
-            packages: '/path/to/global/packages',
-            binaries: '/path/to/global/binaries'
-          }
-        })),
-        'import-from': r.by(() => () => libnpx)
-      })).create;
-    });
+  beforeEach(function() {
+    sandbox = sinon.createSandbox();
+    libnpx = sandbox.spy();
+    libnpx.parseArgs = parseArgs;
+    create = rewiremock.proxy('..', r => ({
+      'global-dirs': r.by(() => ({
+        npm: {
+          packages: '/path/to/global/packages',
+          binaries: '/path/to/global/binaries'
+        }
+      })),
+      'import-from': r.by(() => () => libnpx)
+    })).create;
+  });
 
-    afterEach(function() {
-      sandbox.restore();
-      rewiremock.disable();
-    });
+  afterEach(function() {
+    sandbox.restore();
+  });
 
+  describe('failure', function() {
     describe('when no generator specified', function() {
       it('should fail', async function() {
         expect(
@@ -69,7 +67,9 @@ describe('create-yo', function() {
         });
       });
     });
+  });
 
+  describe('success', function() {
     describe('when subgenerator specified', function() {
       it('should ask npx for the parent generator but use the subgenerator', async function() {
         await create([
@@ -87,6 +87,72 @@ describe('create-yo', function() {
             }
           ]
         });
+      });
+    });
+
+    describe('when scoped package specified', function() {
+      describe('when subgenerator specified', function() {
+        it('should ask npx for the parent generator but use the subgenerator', async function() {
+          await create([
+            '/path/to/node',
+            '/path/to/create-yo',
+            '@scoped-package/generator-some-generator:subgenerator'
+          ]);
+          expect(libnpx, 'to have a call satisfying', {
+            args: [
+              {
+                package: [
+                  'yo@latest',
+                  '@scoped-package/generator-some-generator@latest'
+                ],
+                command: 'yo',
+                cmdOpts: [
+                  '@scoped-package/generator-some-generator:subgenerator'
+                ],
+                npm: '/path/to/global/binaries/npm'
+              }
+            ]
+          });
+        });
+      });
+
+      it('should call libnpx with the correct parameters', async function() {
+        await create([
+          '/path/to/node',
+          '/path/to/create-yo',
+          '@scoped-package/generator-some-generator'
+        ]);
+        expect(libnpx, 'to have a call satisfying', {
+          args: [
+            {
+              package: [
+                'yo@latest',
+                '@scoped-package/generator-some-generator@latest'
+              ],
+              command: 'yo',
+              cmdOpts: ['@scoped-package/generator-some-generator'],
+              npm: '/path/to/global/binaries/npm'
+            }
+          ]
+        });
+      });
+    });
+
+    it('should call libnpx with the correct parameters', async function() {
+      await create([
+        '/path/to/node',
+        '/path/to/create-yo',
+        'generator-some-generator'
+      ]);
+      expect(libnpx, 'to have a call satisfying', {
+        args: [
+          {
+            package: ['yo@latest', 'generator-some-generator@latest'],
+            command: 'yo',
+            cmdOpts: ['some-generator'],
+            npm: '/path/to/global/binaries/npm'
+          }
+        ]
       });
     });
   });
