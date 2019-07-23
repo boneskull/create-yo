@@ -38,8 +38,6 @@ This package does little other than monkey with arguments and invoke `npx` progr
 
 Please use [Angular Commit Message Conventions](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines).
 
-PRO TIP: After staging your changes with `git add`, use `npm run commit` for a fancy interactive prompt.
-
 ## Maintainers
 
 [@boneskull](https://github.com/boneskull)
