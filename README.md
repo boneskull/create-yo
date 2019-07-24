@@ -36,7 +36,7 @@ This package does little other than monkey with arguments and invoke `npx` progr
 
 ## Contribution
 
-Please use [Angular Commit Message Conventions](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines).
+Please use [Conventional Commit conventions](https://www.conventionalcommits.org). Commit messages are checked via Git hook using [commitlint](https://npm.im/@commitlint/cli).
 
 ## Maintainers
 
