@@ -5,11 +5,35 @@
 const path = require('path');
 const globalDirs = require('global-dirs');
 const importFrom = require('import-from');
-const npx = importFrom(path.join(globalDirs.npm.packages, 'npm'), 'libnpx');
 const symbols = require('log-symbols');
 const bold = require('ansi-bold');
 
 const PREFIX = 'generator-';
+
+const npx = (() => {
+  try {
+    return importFrom(path.join(globalDirs.npm.packages, 'npm'), 'libnpx');
+  } catch (error) {
+    if (process.platform !== 'win32') {
+      throw error;
+    }
+  }
+
+  // On Windows globalDirs.npm.packages can resolve to
+  // "%APPDATA%\Roaming\npm\node_modules"
+  // when the location of libnpx is actually
+  // "%ProgramFiles%\nodejs\node_modules\npm\node_modules"
+  const unwrapNpmCmd = require('unwrap-npm-cmd');
+
+  // Find the location of the npx-cli.js script.
+  // ex: "C:\Program Files\nodejs\node_modules\npm\bin\npx-cli.js"
+  let npxCli = unwrapNpmCmd('npx', {jsOnly: true});
+
+  // Strip the quotes around the string.
+  npxCli = npxCli.replace(/^"|"$/g, '');
+
+  return importFrom(npxCli, 'libnpx');
+})();
 
 /**
  * Invokes `npx` with `--package yo --package generator-generatorName -- yo generatorName`
