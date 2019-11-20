@@ -9,8 +9,6 @@ const npx = importFrom(path.join(globalDirs.npm.packages, 'npm'), 'libnpx');
 const symbols = require('log-symbols');
 const bold = require('ansi-bold');
 
-const PREFIX = 'generator-';
-
 /**
  * Invokes `npx` with `--package yo --package generator-generatorName -- yo generatorName`
  *
@@ -31,21 +29,14 @@ async function create(
     );
   }
 
-  const generator = argv.pop();
-  let generatorPackage;
-  let generatorName;
-  if (generator.startsWith('@')) {
-    // handle scoped packages
-    generatorName = generatorPackage = generator;
-  } else {
-    generatorPackage = generator.startsWith(PREFIX)
-      ? generator
-      : `${PREFIX}${generator}`;
-    generatorName = generatorPackage.slice(PREFIX.length);
-  }
-
-  // handle subgenerators
-  generatorPackage = generatorPackage.split(':').shift();
+  const [generator, subgenerator] = argv.pop().split(':');
+  const generatorPackage = packageName(generator);
+  const generatorName = [
+    generatorPackage.replace(/generator-/, ''),
+    subgenerator
+  ]
+    .filter(Boolean)
+    .join(':');
 
   return npx(
     npx.parseArgs(
@@ -77,3 +68,24 @@ async function create(
 })();
 
 exports.create = create;
+
+/**
+ * Get package name for given generator.
+ *
+ * @private
+ * @param {string} generator
+ * @returns {string} package name
+ *
+ * @example
+ * ```js
+ * generatorName(`license`) // => `generator-license`
+ * generatorName(`@dizmo/dizmo`) // => `@dizmo/generator-dizmo`
+ * ```
+ */
+function packageName(generator) {
+  if (/^@[^/]+\//.test(generator)) {
+    return generator.replace(/^@([^/]+)\/(generator-)?/, '@$1/generator-');
+  }
+
+  return generator.replace(/^(generator-)?/, 'generator-');
+}
