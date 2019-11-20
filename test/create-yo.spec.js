@@ -96,7 +96,7 @@ describe('create-yo', function() {
           await create([
             '/path/to/node',
             '/path/to/create-yo',
-            '@scoped-package/generator-some-generator:subgenerator'
+            '@scoped-package/some-generator:subgenerator'
           ]);
           expect(libnpx, 'to have a call satisfying', {
             args: [
@@ -106,9 +106,7 @@ describe('create-yo', function() {
                   '@scoped-package/generator-some-generator@latest'
                 ],
                 command: 'yo',
-                cmdOpts: [
-                  '@scoped-package/generator-some-generator:subgenerator'
-                ],
+                cmdOpts: ['@scoped-package/some-generator:subgenerator'],
                 npm: '/path/to/global/binaries/npm'
               }
             ]
@@ -120,7 +118,7 @@ describe('create-yo', function() {
         await create([
           '/path/to/node',
           '/path/to/create-yo',
-          '@scoped-package/generator-some-generator'
+          '@scoped-package/some-generator'
         ]);
         expect(libnpx, 'to have a call satisfying', {
           args: [
@@ -130,7 +128,7 @@ describe('create-yo', function() {
                 '@scoped-package/generator-some-generator@latest'
               ],
               command: 'yo',
-              cmdOpts: ['@scoped-package/generator-some-generator'],
+              cmdOpts: ['@scoped-package/some-generator'],
               npm: '/path/to/global/binaries/npm'
             }
           ]
