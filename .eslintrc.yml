@@ -6,7 +6,7 @@ rules:
   strict:
     - error
     - safe
-  standard/computed-property-even-spacing: false
+  standard/computed-property-even-spacing: off
 parserOptions:
   sourceType: script
 overrides:

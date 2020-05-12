@@ -31,7 +31,7 @@ async function create(
     );
   }
 
-  let generator = argv.pop();
+  const generator = argv.pop();
   let generatorPackage;
   let generatorName;
   if (generator.startsWith('@')) {
