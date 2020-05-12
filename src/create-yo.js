@@ -5,11 +5,48 @@
 const path = require('path');
 const globalDirs = require('global-dirs');
 const importFrom = require('import-from');
-const npx = importFrom(path.join(globalDirs.npm.packages, 'npm'), 'libnpx');
 const symbols = require('log-symbols');
 const bold = require('ansi-bold');
+const fs = require('fs');
 
 const PREFIX = 'generator-';
+
+function getNpxCliPathWindows() {
+  // On Windows globalDirs.npm.packages can resolve to
+  // "%APPDATA%\Roaming\npm\node_modules"
+  // when the location of libnpx is actually
+  // "%ProgramFiles%\nodejs\node_modules\npm\node_modules"
+
+  // Find the location of the npx-cli.js script.
+  // ex: "C:\Program Files\nodejs\node_modules\npm\bin\npx-cli.js"
+  let npxCli = require('unwrap-npm-cmd')('npx', {jsOnly: true});
+
+  // Strip the quotes around the string.
+  return npxCli.replace(/^"|"$/g, '');
+}
+
+const npx = (() => {
+  try {
+    return importFrom(path.join(globalDirs.npm.packages, 'npm'), 'libnpx');
+  } catch (error) {
+    if (process.platform !== 'win32') {
+      throw error;
+    }
+  }
+
+  const npxCli = getNpxCliPathWindows();
+  return importFrom(npxCli, 'libnpx');
+})();
+
+function getNpmPath() {
+  let npmPath = path.join(globalDirs.npm.binaries, 'npm');
+  if (process.platform === 'win32' && !fs.existsSync(npmPath)) {
+    let npmCli = require('unwrap-npm-cmd')('npm', {jsOnly: true});
+    // Strip the quotes around the string.
+    npmPath = npmCli.replace(/^"|"$/g, '');
+  }
+  return npmPath;
+}
 
 /**
  * Invokes `npx` with `--package yo --package generator-generatorName -- yo generatorName`
@@ -19,10 +56,7 @@ const PREFIX = 'generator-';
  * @param {string} [npmPath] - Absolute path to `npm-cli.js`
  * @returns {Promise<void>} When finished
  */
-async function create(
-  argv = process.argv.slice(),
-  npmPath = path.join(globalDirs.npm.binaries, 'npm')
-) {
+async function create(argv = process.argv.slice(), npmPath = getNpmPath()) {
   if (argv.length < 3) {
     throw new Error(
       `specify a generator to run via ${bold(
