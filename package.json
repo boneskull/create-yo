@@ -1,6 +1,6 @@
 {
   "name": "create-yo",
-  "version": "0.0.0-development",
+  "version": "2.0.0",
   "description": "Use Yeoman generators via \"npm init\"",
   "main": "src/create-yo.js",
   "bin": {
