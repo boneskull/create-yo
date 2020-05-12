@@ -17,7 +17,7 @@ You _could_ install this, but you shouldn't have to. Use `npm` to install global
 
 ### Requirements
 
-- Node.js v8.0.0+
+- Node.js v10.0.0+
 - npm v6.1.0+
 
 ## Usage
